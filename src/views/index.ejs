@@ -35,9 +35,9 @@
             Você tem 2 horas livres no seu dia
           </span>
           <a href="/profile" id="avatar-profile">
-            <p>Jakeliny <span>Ver perfil</span></p>
+            <p>João Pedro <span>Ver perfil</span></p>
             <img
-              src="https://avatars.githubusercontent.com/u/17316392?s=460&u=6912a91a70bc89745a2079fdcdad3bc3ce370f13&v=4"
+              src="https://avatars.githubusercontent.com/u/56309566?v=4"
             />
           </a>
         </section>
@@ -86,7 +86,13 @@
               </div>
               <div class="deadline column">
                 <span>Prazo</span>
-                <p><%= job.remaining %>  dias para a entrega</p>
+                <p>
+                  <% if (job.status === 'progress') { %>
+                    <%= job.remaining %> dias para a entrega
+                  <% } else { %>
+                    Prazo encerrado
+                  <% } %> 
+                </p>
               </div>
               <div class="amount column">
                 <span>Valor</span>
