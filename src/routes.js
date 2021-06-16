@@ -84,7 +84,7 @@ const Job = {
                     ...job,
                     remaining,
                     status,
-                    budget: Profile.data["value-hour"] * job["total-hours"]
+                    budget: Job.services.calculateBudget(job, Profile.data["value-hour"]) 
                 }
             })
 
@@ -109,6 +109,51 @@ const Job = {
                 created_at: Date.now() // atribuindo a data de hoje
             })
             return res.redirect('/')
+        },
+
+        show(req, res) {
+
+            const jobId = req.params.id
+
+            const job = Job.data.find((job) => Number(job.id) === Number(jobId))
+
+            if(!job){
+                return res.send('Job not found!')
+            }
+            
+            job.budget = Job.services.calculateBudget(job, Profile.data["value-hour"])
+
+            return res.render(views + "job-edit", { job })
+        },
+
+        update(req, res) {
+            // aqui estou pegando do parametro o numero do projeto *esse .id é o mesmo que está sendo renderizada na url da pagina*
+            const jobId = req.params.id
+
+            // aqui estou procurando o job que tem o id que está na url da pagina
+            const job = Job.data.find((job) => Number(job.id) === Number(jobId))
+
+            // se nao tiver nenhum job com esse id retorna Job not found!
+            if (!job) {
+                return res.send('Job not found!')
+            }
+
+            const updatedJob = {
+                ...job,
+                name: req.body.name,
+                "total-hours": req.body["total-hours"],
+                "daily-hours": req.body["daily-hours"]
+
+            }
+
+            Job.data = Job.data.map(job => {
+                if (Number(job.id) === Number(jobId)) {
+                    job = updatedJob
+                }
+                return job
+            })
+
+            res.redirect('/job/' + jobId)
         }
     },
 
@@ -129,7 +174,8 @@ const Job = {
 
             // restam X dias
             return dayDiff
-        }
+        },
+        calculateBudget: (job, valueHour) => valueHour * job["total-hours"]
     }
 
 }
@@ -139,7 +185,8 @@ const Job = {
 routes.get('/', Job.controllers.index)
 routes.get('/job', Job.controllers.create)
 routes.post('/job', Job.controllers.save)
-routes.get('/job/edit', (req, res) => res.render(views + "job-edit"))
+routes.get('/job/:id', Job.controllers.show)
+routes.post('/job/:id', Job.controllers.update)
 routes.get('/profile', Profile.controllers.index)
 routes.post('/profile', Profile.controllers.update)
 
