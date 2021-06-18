@@ -2,9 +2,10 @@ const express = require("express") // express é uma biblioteca pra criar o serv
 const routes = express.Router() // router é um método do express pra criar os caminhos da página
 const ProfileController = require('./controllers/ProfileController')
 const JobController = require('./controllers/JobController')
+const DashboardController = require("./controllers/DashboardController")
 
 // req, res
-routes.get('/', JobController.index)
+routes.get('/', DashboardController.index)
 routes.get('/job', JobController.create)
 routes.post('/job', JobController.save)
 routes.get('/job/:id', JobController.show)
