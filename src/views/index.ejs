@@ -35,9 +35,9 @@
             Você tem 2 horas livres no seu dia
           </span>
           <a href="/profile" id="avatar-profile">
-            <p>João Pedro <span>Ver perfil</span></p>
+            <p><%= profile.name %> <span>Ver perfil</span></p>
             <img
-              src="https://avatars.githubusercontent.com/u/56309566?v=4"
+              src="<%= profile.avatar %>"
             />
           </a>
         </section>
@@ -49,15 +49,15 @@
 
           <div class="info">
             <div class="total">
-              <strong>12</strong>
+              <strong><%= statusCount.total %> </strong>
               Projetos ao total
             </div>
             <div class="in-progress">
-              <strong>7</strong>
+              <strong><%= statusCount.progress %> </strong>
               Em andamento
             </div>
             <div class="finished">
-              <strong>4</strong>
+              <strong><%= statusCount.done %> </strong>
               Encerrados
             </div>
           </div>
